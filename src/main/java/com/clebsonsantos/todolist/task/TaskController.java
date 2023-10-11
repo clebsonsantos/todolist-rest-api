@@ -1,6 +1,8 @@
 package com.clebsonsantos.todolist.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +16,8 @@ public class TaskController {
   private ITaskRepository repository;
 
   @PostMapping
-  public TaskModel create(@RequestBody TaskModel taskModel) {
+  public ResponseEntity<Object> create(@RequestBody TaskModel taskModel) {
     var task = this.repository.save(taskModel);
-    return task;
+    return ResponseEntity.status(HttpStatus.CREATED).body(task);
   }
 }

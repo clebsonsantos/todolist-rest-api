@@ -55,9 +55,18 @@ public class TaskController {
       @PathVariable UUID id) {
 
     var task = this.repository.findById(id).orElse(null);
+    var idUser = (UUID) request.getAttribute("idUser");
 
     if (task == null) {
-      return ResponseEntity.badRequest().body("Task doesn't exists");
+      return ResponseEntity
+          .badRequest()
+          .body("Task doesn't exists");
+    }
+
+    if (!task.getIdUser().equals(idUser)) {
+      return ResponseEntity
+          .badRequest()
+          .body("User doesn't have permission");
     }
 
     Utils.copyNonNullProperty(taskModel, task);
